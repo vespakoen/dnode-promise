@@ -1,6 +1,6 @@
 # dnode-promise
 
-Use promises on your (dnode)[https://github.com/substack/dnode] server.
+Use promises on your [dnode](https://github.com/substack/dnode) server.
 
 ## installation
 
