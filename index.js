@@ -1,4 +1,4 @@
-module.exports = function (dnode, promiseMethods) {
+module.exports = function (promiseMethods) {
   var dnodeMethods = {};
   Object.keys(promiseMethods).forEach(function (methodName) {
     dnodeMethods[methodName] = function () {
@@ -12,5 +12,5 @@ module.exports = function (dnode, promiseMethods) {
       }
     }
   });
-  return dnode(dnodeMethods);
+  return dnodeMethods;
 };

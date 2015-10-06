@@ -10,20 +10,20 @@ npm install --save dnode-promise
 
 ## api
 
-This package exports one function (take a look inside!) that takes dnode as the first argument,
-the promise methods as the second argument and returns the dnode server with the "node-ified" methods inside.
+This package exports one function (take a look inside!) that takes an object of promise-methods and returns an object of dnode style methods.
 
 ## usage
 
 ```js
 var dnode = require('dnode');
 var dnodep = require('dnode-promise');
-var server = dnodep(dnode, {
-    transform : function (s) {
-      // sorry, lame example =)
-      return Promise.resolve(s.replace(/[aeiou]{2,}/, 'oo').toUpperCase());
-    }
+var methods = dnodep({
+  transform: function (s) {
+    // sorry, lame example =)
+    return Promise.resolve(s.replace(/[aeiou]{2,}/, 'oo').toUpperCase());
+  }
 });
+var server = dnode(methods);
 server.listen(5004);
 ```
 
