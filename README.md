@@ -14,17 +14,46 @@ This package exports one function (take a look inside!) that takes an object of 
 
 ## usage
 
+server:
 ```js
 var dnode = require('dnode');
 var dnodep = require('dnode-promise');
-var methods = dnodep({
+var server = dnode(dnodep.toDnode({
   transform: function (s) {
-    // sorry, lame example =)
     return Promise.resolve(s.replace(/[aeiou]{2,}/, 'oo').toUpperCase());
   }
-});
-var server = dnode(methods);
+}));
 server.listen(5004);
+```
+
+client:
+```js
+var dnode = require('dnode');
+var dnodep = require('dnode-promise');
+var d = dnode.connect(5004);
+d.on('remote', function (methods) {
+  var remote = dnodep.toPromise(methods);
+  remote.transform('beep')
+    .then(function (s) {
+      console.log('beep => ' + s);
+      d.end();
+    });
+});
+```
+
+If you want a specific promise to be returned from the remote calls,
+supply it to the second argument of the `toPromise` method, example:
+
+```js
+var BBPromise = require('bluebird');
+// ...
+var remote = dnodep.toPromise(methods, BBPromise);
+remote.transform('beep')
+  .then(function (s) {
+    console.log('beep => ' + s);
+    d.end();
+  });
+// ...
 ```
 
 ## license
