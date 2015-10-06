@@ -19,8 +19,9 @@ the promise methods as the second argument and returns the dnode server with the
 var dnode = require('dnode');
 var dnodep = require('dnode-promise');
 var server = dnodep(dnode, {
-    transform : function (s, cb) {
-        Promise.resolve(s.replace(/[aeiou]{2,}/, 'oo').toUpperCase());
+    transform : function (s) {
+      // sorry, lame example =)
+      return Promise.resolve(s.replace(/[aeiou]{2,}/, 'oo').toUpperCase());
     }
 });
 server.listen(5004);
@@ -31,4 +32,4 @@ server.listen(5004);
 Copyright 2015 Koen Schmeets (hello@koenschmeets.nl)
 
 This project is free software released under the MIT license:
-http://www.opensource.org/licenses/mit-license.php 
+http://www.opensource.org/licenses/mit-license.php
