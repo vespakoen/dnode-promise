@@ -6,10 +6,12 @@ module.exports = {
         var args = Array.prototype.slice.call(arguments, 0, -1);
         var cb = arguments[arguments.length - 1];
         var res = promiseMethods[methodName].apply(promiseMethods, args);
-        if (res.then) {
+        if (res && res.then) {
           res.then(function (result) {
             cb(result);
           });
+        } else {
+          cb(res);
         }
       }
     });

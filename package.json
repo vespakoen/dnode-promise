@@ -1,6 +1,6 @@
 {
   "name": "dnode-promise",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Helper for using promises on a dnode server",
   "main": "index.js",
   "scripts": {

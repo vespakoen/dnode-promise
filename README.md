@@ -10,38 +10,40 @@ npm install --save dnode-promise
 
 ## api
 
-This package exports one function (take a look inside!) that takes an object of promise-methods and returns an object of dnode style methods.
+### dnodep.toDnode(promiseMethods)
+Turns promise methods into functions with the dnode style callback `function (arg, cb) {}`
 
-## usage
-
-server:
 ```js
 var dnode = require('dnode');
 var dnodep = require('dnode-promise');
 var server = dnode(dnodep.toDnode({
-  transform: function (s) {
+  transform: function (url) {
+    // lame example of using promises
     return Promise.resolve(s.replace(/[aeiou]{2,}/, 'oo').toUpperCase());
-  }
+    // returning the value directory (without Promise.resolve) would have worked as well!
+  },
 }));
 server.listen(5004);
 ```
 
-client:
+### dnodep.toPromise(dnodeMethods, PromiseImplementation)
+Turns dnode methods to functions returning promises
+
 ```js
 var dnode = require('dnode');
 var dnodep = require('dnode-promise');
-var d = dnode.connect(5004);
-d.on('remote', function (methods) {
+var client = dnode.connect(5004);
+client.on('remote', function (methods) {
   var remote = dnodep.toPromise(methods);
   remote.transform('beep')
     .then(function (s) {
       console.log('beep => ' + s);
-      d.end();
+      client.end();
     });
 });
 ```
 
-If you want a specific promise to be returned from the remote calls,
+If you want to use another promise implementation as the default `Promise` to be returned from the remote calls,
 supply it to the second argument of the `toPromise` method, example:
 
 ```js
