@@ -6,6 +6,11 @@ module.exports = {
         var args = Array.prototype.slice.call(arguments, 0, -1);
         var cb = arguments[arguments.length - 1];
         var res = promiseMethods[methodName].apply(promiseMethods, args);
+        if (res && res.catch){
+          res.catch(function(error){
+            cb(error)
+          })
+        }
         if (res && res.then) {
           res.then(function (result) {
             cb(result);
@@ -25,8 +30,9 @@ module.exports = {
     Object.keys(dnodeMethods).forEach(function (methodName) {
       promiseMethods[methodName] = function () {
         var args = Array.prototype.slice.call(arguments, 0, arguments.length);
-        return new PromiseImplementation(function (resolve) {
+        return new PromiseImplementation(function (resolve, reject) {
           args.push(resolve);
+          args.push(reject);
           dnodeMethods[methodName].apply(dnodeMethods, args);
         });
       }
